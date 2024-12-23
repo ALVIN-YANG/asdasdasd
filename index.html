@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定位</title>
+    <script
+      charset="utf-8"
+      src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+    <script src="https://ws-uat.hzguode.com/js/vconsole.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <div>{{lng}}</div>
+      <div>{{lag}}</div>
+    </div>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          lng: "",
+          lag: "",
+        },
+        created() {
+          if ("geolocation" in navigator) {
+            // 检查浏览器是否支持Geolocation API
+            navigator.geolocation.getCurrentPosition(
+              // 成功回调函数
+              (position) => {
+                this.center = [
+                  position.coords.longitude,
+                  position.coords.latitude,
+                ];
+                this.lng = position.coords.longitude;
+                this.lag = position.coords.latitude;
+                alert("纬度:", position.coords.latitude);
+                console.log("纬度:", position.coords.latitude);
+                console.log("经度:", position.coords.longitude);
+              },
+              // 错误回调函数
+              (error) => {
+                alert("获取位置失败:", error);
+              },
+              // 配置选项，请求高精度位置
+              {
+                enableHighAccuracy: true, // 请求高精度位置
+                maximumAge: 0, // 不缓存位置
+                timeout: 10000, // 最长等待10秒
+              }
+            );
+          } else {
+            alert("浏览器不支持地理定位");
+            console.log("浏览器不支持地理定位");
+          }
+        },
+      });
+      // Vue.use(vant.Lazyload);
+    </script>
+  </body>
+</html>
